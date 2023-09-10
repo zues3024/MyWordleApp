@@ -50,24 +50,21 @@ class MainActivity : AppCompatActivity() {
         val submitButton = findViewById<Button>(R.id.submitButton)
         val resetButton = findViewById<Button>(R.id.reset_button)
         submitButton.setOnClickListener {
-            while (guessCount < 4) {
                 guessCount++
                 val userInput = submission.text.toString()
-                Toast.makeText(
-                    this,
-                    checkGuess(userInput) + "\tGuesses: " + guessCount,
-                    Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(this, checkGuess(userInput) + "\tGuesses: " + guessCount,
+                    Toast.LENGTH_SHORT).show();
+            if(guessCount > 3) {
+                submitButton.visibility = View.INVISIBLE
+                answer.visibility = View.VISIBLE
+                resetButton.visibility = View.VISIBLE
+                resetButton.setOnClickListener {
+                    answer.visibility = View.INVISIBLE
+                    guessCount = 0;
+                    wordToGuess = FourLetterWordList.getRandomFourLetterWord()
+                    answer.text = wordToGuess
+                    resetButton.visibility = View.INVISIBLE
                 }
-            submitButton.visibility = View.INVISIBLE
-            answer.visibility = View.VISIBLE
-            resetButton.visibility = View.VISIBLE
-            resetButton.setOnClickListener{
-                answer.visibility = View.INVISIBLE
-                guessCount = 0;
-                wordToGuess = FourLetterWordList.getRandomFourLetterWord()
-                answer.text = wordToGuess
-                resetButton.visibility = View.INVISIBLE
             }
         }
     }
