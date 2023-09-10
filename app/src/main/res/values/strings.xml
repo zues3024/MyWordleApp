@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyWordleApp</string>
+    <string name="answer_text">null</string>
+    <string name="input_hint_text">Enter a valid four letter word</string>
+    <string name="submit_button">Enter Your Guess</string>
+    <string name="reset_button">Reset</string>
+</resources>
