@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                     wordToGuess = FourLetterWordList.getRandomFourLetterWord()
                     answer.text = wordToGuess
                     resetButton.visibility = View.INVISIBLE
+                    submitButton.visibility = View.VISIBLE
                 }
             }
         }
