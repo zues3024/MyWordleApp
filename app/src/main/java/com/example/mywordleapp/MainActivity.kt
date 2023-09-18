@@ -8,8 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
-
 class MainActivity : AppCompatActivity() {
     var wordToGuess = FourLetterWordList.getRandomFourLetterWord()
     var guessCount = 0;
@@ -40,29 +38,101 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+    private fun checkForCorrect(hintString: String) : String {
+        var response = ""
+        if (hintString.equals("OOOO")) {
+            response = "You answered correctly!"
+            return response;
+        }
+        else {
+            response = "You did not guess correctly"
+            return response
+        }
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val answer = findViewById<TextView>(R.id.answer_text_view)
+        var answer = findViewById<TextView>(R.id.answer_text_view)
         answer.text = wordToGuess
+
         val submission = findViewById<EditText>(R.id.input_text)
         val submitButton = findViewById<Button>(R.id.submitButton)
         val resetButton = findViewById<Button>(R.id.reset_button)
+        val guess1 = findViewById<TextView>(R.id.firstGuess)
+        val guess2 = findViewById<TextView>(R.id.secondGuess)
+        val guess3 = findViewById<TextView>(R.id.thirdGuess)
+        val result1 = findViewById<TextView>(R.id.firstResult)
+        val result2 = findViewById<TextView>(R.id.secondResult)
+        val result3 = findViewById<TextView>(R.id.thirdResult)
+
         submitButton.setOnClickListener {
-                guessCount++
-                val userInput = submission.text.toString()
-                Toast.makeText(this, checkGuess(userInput) + "\tGuesses: " + guessCount,
-                    Toast.LENGTH_SHORT).show();
-            if(guessCount > 3) {
+            var userInput = submission.text.toString()
+            guessCount++
+            var changeInput = when(guessCount) {
+                1 -> {
+                    guess1.text = submission.text.toString()
+                    guess1.visibility = View.VISIBLE
+                    result1.text = checkGuess(userInput)
+                    result1.visibility = View.VISIBLE
+                }
+
+                2 -> {
+                    userInput = submission.text.toString()
+                    guess2.text = submission.text.toString()
+                    guess2.visibility = View.VISIBLE
+                    result2.text = checkGuess(userInput)
+                    result2.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    userInput = submission.text.toString()
+                    guess3.text = submission.text.toString()
+                    guess3.visibility = View.VISIBLE
+                    result3.text = checkGuess(userInput)
+                    result3.visibility = View.VISIBLE
+                }
+            }
+            submission.text.clear()
+            if (checkGuess(userInput).equals("OOOO")) {
+                Toast.makeText(this, checkForCorrect(checkGuess(userInput)), Toast.LENGTH_LONG).show()
                 submitButton.visibility = View.INVISIBLE
+                resetButton.visibility = View.VISIBLE
                 answer.visibility = View.VISIBLE
+                resetButton.setOnClickListener{
+                    answer.visibility = View.INVISIBLE
+                    guessCount = 0
+                    wordToGuess = FourLetterWordList.getRandomFourLetterWord()
+                    answer.text = wordToGuess
+                    guess1.visibility = View.INVISIBLE
+                    guess2.visibility = View.INVISIBLE
+                    guess3.visibility = View.INVISIBLE
+                    result1.visibility = View.INVISIBLE
+                    result2.visibility = View.INVISIBLE
+                    result3.visibility = View.INVISIBLE
+                    resetButton.visibility = View.INVISIBLE
+                    submitButton.visibility = View.VISIBLE
+                }
+            }
+            else {
+                Toast.makeText(this, checkForCorrect(checkGuess(userInput)), Toast.LENGTH_LONG).show()
+            }
+            if(guessCount == 3)
+            {
+                submitButton.visibility = View.INVISIBLE
                 resetButton.visibility = View.VISIBLE
                 resetButton.setOnClickListener {
                     answer.visibility = View.INVISIBLE
-                    guessCount = 0;
+                    guessCount = 0
                     wordToGuess = FourLetterWordList.getRandomFourLetterWord()
                     answer.text = wordToGuess
+                    guess1.visibility = View.INVISIBLE
+                    guess2.visibility = View.INVISIBLE
+                    guess3.visibility = View.INVISIBLE
+                    result1.visibility = View.INVISIBLE
+                    result2.visibility = View.INVISIBLE
+                    result3.visibility = View.INVISIBLE
                     resetButton.visibility = View.INVISIBLE
                     submitButton.visibility = View.VISIBLE
                 }
