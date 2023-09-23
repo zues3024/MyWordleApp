@@ -121,9 +121,12 @@ class MainActivity : AppCompatActivity() {
             if(guessCount == 3)
             {
                 submitButton.visibility = View.INVISIBLE
+                answer.visibility = View.VISIBLE
+                submission.visibility = View.INVISIBLE
                 resetButton.visibility = View.VISIBLE
                 resetButton.setOnClickListener {
                     answer.visibility = View.INVISIBLE
+                    submission.visibility = View.VISIBLE
                     guessCount = 0
                     wordToGuess = FourLetterWordList.getRandomFourLetterWord()
                     answer.text = wordToGuess
